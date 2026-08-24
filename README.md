@@ -46,6 +46,10 @@ Rule framing follows Google Search Central guidance for [robots directives](http
 
 Problem scope was reviewed against [tanujrajputdev/shopify-theme-audit-skill](https://github.com/tanujrajputdev/shopify-theme-audit-skill), which documents product schema and Shopify theme checks, and [puneetindersingh/open-seo-crawler](https://github.com/puneetindersingh/open-seo-crawler), a CMS-aware crawler with exportable findings. This repository is an original dependency-free implementation: it audits supplied JSON exports locally and does not connect to a live Shopify store.
 
+## Media attribution
+
+The catalog visual uses [Multi-USB and charger](https://commons.wikimedia.org/wiki/File:Multi-USB_and_charger.jpg) by SD hehua, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
 ## Portfolio framing
 
 Built a local-first cross-border 3C SEO audit workbench that converts catalog exports into prioritized product, collection, indexability and metadata remediation tasks; added deterministic tests and browser-verifiable CSV reporting.
