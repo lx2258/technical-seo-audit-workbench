@@ -22,7 +22,7 @@
         <div class="dashboard-grid">
           <section class="input-panel" aria-label="Crawl import">
             <div class="panel-heading"><div><p class="section-kicker">INPUT</p><h3>Catalog export</h3></div><span class="format-chip">JSON / CSV</span></div>
-            <p class="panel-copy">Import JSON or a Screaming Frog-style CSV. Add market fields to check hreflang, currency and variant SKU coverage.</p>
+            <p class="panel-copy">Import JSON or a Screaming Frog-style CSV. An optional HTML snapshot lets the workbench verify Product JSON-LD and hreflang evidence directly.</p>
             <figure class="catalog-visual">
               <img src="./assets/multi-usb-charger.jpg" alt="USB charging cable and wall charger on a desk" />
               <figcaption>3C catalog context <span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Multi-USB_and_charger.jpg">SD hehua / Wikimedia Commons</a>, CC BY 4.0</span></figcaption>
@@ -30,7 +30,7 @@
             <label class="file-input" for="crawl-file">Import CSV or JSON file <input id="crawl-file" type="file" accept=".csv,.json,application/json,text/csv" /></label>
             <label for="crawl-input">Catalog page data</label>
             <textarea id="crawl-input" spellcheck="false" aria-describedby="input-help" placeholder='Paste a JSON array, e.g. [{"url":"https://shop.example/products/charger", "pageType":"product", "status":200}]'></textarea>
-            <p id="input-help" class="input-help">Core: url, status, canonical, title, description, h1. Cross-border: market, hreflangCount, price, currency, variantCount, variantSkuCoverage.</p>
+            <p id="input-help" class="input-help">Core: url, status, canonical, title, description, h1. Cross-border: market, hreflangCount, price, currency, variantCount, variantSkuCoverage. Evidence: html or htmlSnapshot.</p>
             <button class="button run-button" id="run-audit">Run audit <span aria-hidden="true">&#8594;</span></button>
             <p id="message" class="message" role="status" aria-live="polite"></p>
           </section>

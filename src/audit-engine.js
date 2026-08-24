@@ -1,3 +1,5 @@
+import { enrichPageWithEvidence } from './evidence-parser.js';
+
 export const SEVERITY = { critical: 4, high: 3, medium: 2, low: 1 };
 
 const clean = value => String(value ?? '').trim();
@@ -8,6 +10,7 @@ function finding(page, rule, severity, message, recommendation) {
 }
 
 export function auditPage(page) {
+  page = enrichPageWithEvidence(page);
   const findings = [];
   const url = clean(page.url);
   const robots = clean(page.robots).toLowerCase();

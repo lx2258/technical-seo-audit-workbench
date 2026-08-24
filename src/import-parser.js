@@ -13,7 +13,7 @@ function csvRows(text) {
   return rows.filter(row => row.some(value => clean(value)));
 }
 
-const aliases = { url:['url','address'], status:['status','status code'], indexable:['indexable','indexability'], canonical:['canonical','canonical link element 1'], title:['title','title 1'], description:['description','meta description 1'], h1:['h1','h1-1'], robots:['robots','meta robots 1'] };
+const aliases = { url:['url','address'], status:['status','status code'], indexable:['indexable','indexability'], canonical:['canonical','canonical link element 1'], title:['title','title 1'], description:['description','meta description 1'], h1:['h1','h1-1'], robots:['robots','meta robots 1'], html:['html','html snapshot','raw html'] };
 const field = (row, headers, names) => { const index = headers.findIndex(header => names.includes(header)); return index < 0 ? '' : clean(row[index]); };
 
 export function parseCrawlInput(value) {
@@ -26,6 +26,7 @@ export function parseCrawlInput(value) {
   if (!headers.some(header => aliases.url.includes(header))) throw new Error('CSV requires an Address or URL column.');
   return dataRows.map(row => {
     const values = Object.fromEntries(Object.entries(aliases).map(([key, names]) => [key, field(row, headers, names)]));
-    return { url: values.url, status: values.status ? Number(values.status) : undefined, indexable: values.indexable ? !/non-indexable|noindex/i.test(values.indexable) : undefined, canonical: values.canonical, title: values.title, description: values.description, h1: values.h1, robots: values.robots, pageType: /\/products?\//i.test(values.url) ? 'product' : /\/collections?\//i.test(values.url) ? 'collection' : 'page' };
+    const parsed = { url: values.url, status: values.status ? Number(values.status) : undefined, indexable: values.indexable ? !/non-indexable|noindex/i.test(values.indexable) : undefined, canonical: values.canonical, title: values.title, description: values.description, h1: values.h1, robots: values.robots, pageType: /\/products?\//i.test(values.url) ? 'product' : /\/collections?\//i.test(values.url) ? 'collection' : 'page' };
+    return values.html ? { ...parsed, html: values.html } : parsed;
   }).filter(row => row.url);
 }

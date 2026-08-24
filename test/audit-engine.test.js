@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { auditSite, summary, toCsv } from '../src/audit-engine.js';
 import { parseCrawlInput } from '../src/import-parser.js';
+import { enrichPageWithEvidence } from '../src/evidence-parser.js';
 import { sampleCrawl } from '../src/sample-data.js';
 
 test('prioritizes HTTP blockers above product data gaps', () => {
@@ -59,4 +60,24 @@ test('flags international market and product variant gaps from supplied catalog 
   assert.ok(findings.some(item => item.rule === 'hreflang-coverage'));
   assert.ok(findings.some(item => item.rule === 'offer-currency'));
   assert.ok(findings.some(item => item.rule === 'variant-sku-coverage'));
+});
+
+test('derives Product offer data and hreflang coverage from captured page HTML', () => {
+  const page = enrichPageWithEvidence({
+    url: 'https://voltgear.example/de-de/products/65w-gan-charger',
+    html: '<link rel="alternate" hreflang="en-US" href="https://voltgear.example/products/65w-gan-charger"><link rel="alternate" hreflang="de-DE" href="https://voltgear.example/de-de/products/65w-gan-charger"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","sku":"VG-65-DE","offers":{"@type":"Offer","price":"49.99","priceCurrency":"EUR","availability":"https://schema.org/InStock"}}</script>'
+  });
+  assert.deepEqual(page, {
+    url: 'https://voltgear.example/de-de/products/65w-gan-charger', html: page.html,
+    productSchema: true, sku: 'VG-65-DE', price: '49.99', currency: 'EUR', availability: 'InStock', hreflangCount: 2
+  });
+});
+
+test('uses HTML evidence instead of a supplied schema flag when the captured page has no Product JSON-LD', () => {
+  const findings = auditSite([{
+    url: 'https://voltgear.example/products/charger', status: 200, indexable: true,
+    canonical: 'https://voltgear.example/products/charger', title: 'Charger', description: 'Charger', h1: 'Charger',
+    inSitemap: true, pageType: 'product', productSchema: true, html: '<html><head></head><body>Charger</body></html>'
+  }]);
+  assert.ok(findings.some(item => item.rule === 'product-schema'));
 });

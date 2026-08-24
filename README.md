@@ -9,6 +9,7 @@ A local-first portfolio project for reviewing crawl exports. It translates page-
 - Severity scoring with a transparent explanation and a concrete next action.
 - Local JSON / Screaming Frog-style CSV import and client-side CSV export. Crawl data stays in the browser.
 - Cross-border checks for supplied market/hreflang coverage, ISO offer currency, and variant SKU coverage. Remediation status is stored only in the current browser.
+- Optional `html` / `htmlSnapshot` evidence parsing: extracts Product JSON-LD (SKU, offer price, currency and availability) plus `hreflang` links from captured page source.
 - A deliberately bounded data contract: this is an audit workbench, not a crawler or a Google Search Console substitute.
 
 ## Run it
@@ -19,7 +20,7 @@ npm run build
 npm start
 ```
 
-Open `http://localhost:4173`. Use **Load 3C sample**, paste JSON / CSV, or choose a local file. This tool audits the export you provide; it does not crawl a live store or claim access to Google Search Console.
+Open `http://localhost:4173`. Use **Load 3C sample**, paste JSON / CSV, or choose a local file. This tool audits the export you provide; it does not crawl a live store or claim access to Google Search Console. When an HTML snapshot is supplied, its JSON-LD and hreflang markup overrides matching manual fields.
 
 ## Example input
 
