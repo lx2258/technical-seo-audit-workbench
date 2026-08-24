@@ -16,10 +16,21 @@ export function auditPage(page) {
   if (Number(page.status) !== 200) findings.push(finding(page, 'http-status', 'critical', `Returns HTTP ${page.status || 'unknown'} but is in the crawl export.`, 'Redirect, repair, or remove this URL from internal links and sitemap.'));
   if (page.indexable === false || robots.includes('noindex')) findings.push(finding(page, 'indexability', 'critical', 'Page is marked non-indexable or contains a noindex directive.', 'Confirm intent; remove noindex only from pages that should appear in search.'));
   if (!canonical) findings.push(finding(page, 'canonical', 'high', 'Canonical URL is missing.', 'Add one absolute canonical URL for the preferred indexable version.'));
-  else if (canonical !== normalizedUrl(url)) findings.push(finding(page, 'canonical', 'high', `Canonical points to ${page.canonical}.`, 'Verify this consolidation is intentional and align internal links to the chosen canonical.'));
+  else if (canonical !== normalizedUrl(url)) {
+    const isPaginatedCollection = page.pageType === 'collection' && Number(page.pageNumber) > 1;
+    findings.push(isPaginatedCollection
+      ? finding(page, 'collection-pagination-canonical', 'high', `Collection page ${page.pageNumber} canonical points to ${page.canonical}.`, 'Use a self-referencing canonical for this paginated collection page and keep it crawlable when it has unique products.')
+      : finding(page, 'canonical', 'high', `Canonical points to ${page.canonical}.`, 'Verify this consolidation is intentional and align internal links to the chosen canonical.'));
+  }
   if (!clean(page.title)) findings.push(finding(page, 'title', 'medium', 'Title tag is missing.', 'Write a unique, descriptive title matching the page intent.'));
   if (!clean(page.description)) findings.push(finding(page, 'meta-description', 'medium', 'Meta description is missing.', 'Add a concise, page-specific description for snippet control.'));
   if (!clean(page.h1)) findings.push(finding(page, 'h1', 'medium', 'Primary H1 is missing.', 'Add one clear H1 that describes the page topic.'));
+  if (page.pageType === 'product') {
+    if (page.productSchema !== true) findings.push(finding(page, 'product-schema', 'high', 'Product structured data is missing from this product URL.', 'Add Product JSON-LD with name, image, SKU, offer price, currency and availability.'));
+    if (!clean(page.sku)) findings.push(finding(page, 'product-sku', 'medium', 'Product SKU is missing from the supplied product record.', 'Map the sellable SKU into the product feed and Product structured data.'));
+    if (!clean(page.availability)) findings.push(finding(page, 'product-availability', 'high', 'Product availability is missing from the supplied product record.', 'Expose a current availability value in the product feed and Product structured data.'));
+    if (page.outOfStock === true && page.indexable !== false && !clean(page.stockAction)) findings.push(finding(page, 'out-of-stock-policy', 'low', 'Out-of-stock product has no supplied retention or replacement action.', 'Review whether to retain the URL with alternatives, redirect a discontinued product, or apply noindex based on replacement value.'));
+  }
   if (!page.inSitemap) findings.push(finding(page, 'sitemap', 'low', 'URL is not present in the supplied XML sitemap inventory.', 'Include the canonical, indexable URL in the sitemap if it is a search landing page.'));
   return findings;
 }

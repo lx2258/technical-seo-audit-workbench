@@ -12,20 +12,20 @@
   <body>
     <main class="app-shell">
       <aside class="sidebar">
-        <div class="brand"><span class="brand-mark">S</span><span>SEARCH OPS</span></div>
-        <div class="sidebar-copy"><p class="eyebrow">AUDIT SESSION</p><h1>Technical SEO<br>Workbench</h1><p>Convert crawl exports into a reviewable remediation queue.</p></div>
+        <div class="brand"><span class="brand-mark">V</span><span>VOLTGEAR OPS</span></div>
+        <div class="sidebar-copy"><p class="eyebrow">3C CATALOG AUDIT</p><h1>3C Store SEO<br>Workbench</h1><p>Turn catalog exports into an actionable product and collection SEO queue.</p></div>
         <nav aria-label="Audit workflow"><a class="nav-item active" href="#audit-heading"><span>01</span> Crawl input</a><a class="nav-item" href="#results-heading"><span>02</span> Findings</a><a class="nav-item" href="#method"><span>03</span> Method</a></nav>
         <div class="privacy-note"><span class="status-dot"></span><div><strong>Local processing</strong><p>Your crawl data stays in this browser.</p></div></div>
       </aside>
       <section class="content">
-        <header class="content-header"><div><p class="eyebrow">TECHNICAL SEO AUDIT</p><h2 id="audit-heading">Crawl review</h2></div><button class="button primary" id="load-sample">Load sample crawl <span aria-hidden="true">&#8594;</span></button></header>
+        <header class="content-header"><div><p class="eyebrow">CROSS-BORDER 3C SEO</p><h2 id="audit-heading">Catalog review</h2></div><button class="button primary" id="load-sample">Load 3C sample <span aria-hidden="true">&#8594;</span></button></header>
         <div class="dashboard-grid">
           <section class="input-panel" aria-label="Crawl import">
-            <div class="panel-heading"><div><p class="section-kicker">INPUT</p><h3>Crawl export</h3></div><span class="format-chip">JSON</span></div>
-            <p class="panel-copy">Paste normalized page rows to assess indexability, canonical signals and page-level hygiene.</p>
-            <label for="crawl-input">Page data</label>
-            <textarea id="crawl-input" spellcheck="false" aria-describedby="input-help" placeholder='Paste a JSON array, e.g. [{"url":"https://example.com/", "status":200}]'></textarea>
-            <p id="input-help" class="input-help">url, status, indexable, canonical, robots, title, description, h1, inSitemap</p>
+            <div class="panel-heading"><div><p class="section-kicker">INPUT</p><h3>Catalog export</h3></div><span class="format-chip">JSON</span></div>
+            <p class="panel-copy">Audit product and collection URLs for indexability, canonical signals, Product schema, SKU and stock data.</p>
+            <label for="crawl-input">Catalog page data</label>
+            <textarea id="crawl-input" spellcheck="false" aria-describedby="input-help" placeholder='Paste a JSON array, e.g. [{"url":"https://shop.example/products/charger", "pageType":"product", "status":200}]'></textarea>
+            <p id="input-help" class="input-help">url, status, pageType, canonical, title, description, h1, productSchema, sku, availability, pageNumber</p>
             <button class="button run-button" id="run-audit">Run audit <span aria-hidden="true">&#8594;</span></button>
             <p id="message" class="message" role="status" aria-live="polite"></p>
           </section>
@@ -36,7 +36,7 @@
             <div class="table-wrap"><table><thead><tr><th scope="col">Priority</th><th scope="col">Affected URL</th><th scope="col">Finding</th><th scope="col">Recommended action</th></tr></thead><tbody id="findings"><tr><td colspan="4" class="empty"><strong>No crawl loaded</strong><br>Use the sample dataset or paste a crawl export to begin.</td></tr></tbody></table></div>
           </section>
         </div>
-        <footer id="method">Rules align with Google Search Central guidance for robots directives and canonicalization. Findings identify review priorities, not ranking outcomes.</footer>
+      <footer id="method">Rules cover Google Search Central indexability and canonical signals plus commerce-specific Product data checks. Findings identify review priorities, not ranking outcomes.</footer>
       </section>
     </main>
     <script type="module" src="./app.js"></script>
