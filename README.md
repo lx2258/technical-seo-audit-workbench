@@ -2,8 +2,6 @@
 
 A local-first portfolio project for reviewing crawl exports. It translates page-level crawl data into an explicit technical SEO backlog rather than making ranking promises.
 
-![Audit workbench running with sample crawl data](docs/screenshot.png)
-
 ## What it demonstrates
 
 - Auditing indexability, canonical consistency, HTTP status, robots directives, title, meta description, H1, sitemap presence and duplicate metadata.

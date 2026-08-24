@@ -9,27 +9,34 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="shell">
-      <header class="topbar">
-        <div><p class="eyebrow">LOCAL-FIRST SEO TOOL</p><h1>Technical SEO Audit Workbench</h1></div>
-        <div class="status"><span class="status-dot"></span> Crawl data stays in this browser</div>
-      </header>
-      <section class="workspace" aria-labelledby="audit-heading">
-        <div class="intro"><div><h2 id="audit-heading">Turn crawl rows into a remediation queue.</h2><p>Check indexability, canonical signals, metadata and sitemap coverage with traceable rules.</p></div><button class="button primary" id="load-sample">Load sample crawl</button></div>
-        <div class="input-area">
-          <label for="crawl-input">Crawl export JSON</label>
-          <textarea id="crawl-input" spellcheck="false" aria-describedby="input-help" placeholder='Paste a JSON array, e.g. [{"url":"https://example.com/", "status":200}]'></textarea>
-          <div class="input-actions"><p id="input-help">Expected fields: url, status, indexable, canonical, robots, title, description, h1, inSitemap.</p><button class="button secondary" id="run-audit">Run audit</button></div>
-          <p id="message" class="message" role="status" aria-live="polite"></p>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">S</span><span>SEARCH OPS</span></div>
+        <div class="sidebar-copy"><p class="eyebrow">AUDIT SESSION</p><h1>Technical SEO<br>Workbench</h1><p>Convert crawl exports into a reviewable remediation queue.</p></div>
+        <nav aria-label="Audit workflow"><a class="nav-item active" href="#audit-heading"><span>01</span> Crawl input</a><a class="nav-item" href="#results-heading"><span>02</span> Findings</a><a class="nav-item" href="#method"><span>03</span> Method</a></nav>
+        <div class="privacy-note"><span class="status-dot"></span><div><strong>Local processing</strong><p>Your crawl data stays in this browser.</p></div></div>
+      </aside>
+      <section class="content">
+        <header class="content-header"><div><p class="eyebrow">TECHNICAL SEO AUDIT</p><h2 id="audit-heading">Crawl review</h2></div><button class="button primary" id="load-sample">Load sample crawl <span aria-hidden="true">&#8594;</span></button></header>
+        <div class="dashboard-grid">
+          <section class="input-panel" aria-label="Crawl import">
+            <div class="panel-heading"><div><p class="section-kicker">INPUT</p><h3>Crawl export</h3></div><span class="format-chip">JSON</span></div>
+            <p class="panel-copy">Paste normalized page rows to assess indexability, canonical signals and page-level hygiene.</p>
+            <label for="crawl-input">Page data</label>
+            <textarea id="crawl-input" spellcheck="false" aria-describedby="input-help" placeholder='Paste a JSON array, e.g. [{"url":"https://example.com/", "status":200}]'></textarea>
+            <p id="input-help" class="input-help">url, status, indexable, canonical, robots, title, description, h1, inSitemap</p>
+            <button class="button run-button" id="run-audit">Run audit <span aria-hidden="true">&#8594;</span></button>
+            <p id="message" class="message" role="status" aria-live="polite"></p>
+          </section>
+          <section class="results-panel" aria-labelledby="results-heading">
+            <div class="results-heading"><div><p class="section-kicker">OUTPUT</p><h3 id="results-heading">Remediation queue</h3></div><button class="icon-button" id="export-csv" title="Export findings as CSV" aria-label="Export findings as CSV" disabled>&#8595;</button></div>
+            <div id="summary" class="summary" aria-label="Finding summary"></div>
+            <div class="toolbar"><label for="severity-filter">Filter</label><select id="severity-filter"><option value="all">All severity</option><option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select><span id="result-count"></span></div>
+            <div class="table-wrap"><table><thead><tr><th scope="col">Priority</th><th scope="col">Affected URL</th><th scope="col">Finding</th><th scope="col">Recommended action</th></tr></thead><tbody id="findings"><tr><td colspan="4" class="empty"><strong>No crawl loaded</strong><br>Use the sample dataset or paste a crawl export to begin.</td></tr></tbody></table></div>
+          </section>
         </div>
+        <footer id="method">Rules align with Google Search Central guidance for robots directives and canonicalization. Findings identify review priorities, not ranking outcomes.</footer>
       </section>
-      <section class="results" aria-labelledby="results-heading">
-        <div class="results-heading"><div><p class="eyebrow">PRIORITIZED FINDINGS</p><h2 id="results-heading">Audit results</h2></div><button class="icon-button" id="export-csv" title="Export findings as CSV" aria-label="Export findings as CSV" disabled>↓</button></div>
-        <div id="summary" class="summary" aria-label="Finding summary"></div>
-        <div class="toolbar"><label for="severity-filter">Show</label><select id="severity-filter"><option value="all">All severities</option><option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select><span id="result-count"></span></div>
-        <div class="table-wrap"><table><thead><tr><th scope="col">Severity</th><th scope="col">URL</th><th scope="col">Signal</th><th scope="col">What to do</th></tr></thead><tbody id="findings"><tr><td colspan="4" class="empty">Load the sample crawl or paste JSON to generate a queue.</td></tr></tbody></table></div>
-      </section>
-      <footer>Rules reference Google Search Central guidance for robots directives and canonicalization. Findings indicate review priorities, not ranking outcomes.</footer>
     </main>
     <script type="module" src="./app.js"></script>
   </body>
