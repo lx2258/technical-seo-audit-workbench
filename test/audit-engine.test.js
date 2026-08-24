@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { auditSite, summary, toCsv } from '../src/audit-engine.js';
+import { parseCrawlInput } from '../src/import-parser.js';
 import { sampleCrawl } from '../src/sample-data.js';
 
 test('prioritizes HTTP blockers above product data gaps', () => {
@@ -36,4 +37,26 @@ test('flags 3C product data gaps and a paginated collection canonicalised to pag
   assert.ok(findings.some(item => item.rule === 'product-sku'));
   assert.ok(findings.some(item => item.rule === 'product-availability'));
   assert.ok(findings.some(item => item.rule === 'collection-pagination-canonical'));
+});
+
+test('imports a Screaming Frog style CSV and normalizes SEO fields', () => {
+  const rows = parseCrawlInput('Address,Status Code,Indexability,Canonical Link Element 1,Title 1,Meta Description 1,H1-1\nhttps://voltgear.example/products/charger,200,Indexable,https://voltgear.example/products/charger,65W Charger,Travel charger,65W Charger');
+  assert.deepEqual(rows, [{
+    url: 'https://voltgear.example/products/charger', status: 200, indexable: true,
+    canonical: 'https://voltgear.example/products/charger', title: '65W Charger',
+    description: 'Travel charger', h1: '65W Charger', robots: '', pageType: 'product'
+  }]);
+});
+
+test('flags international market and product variant gaps from supplied catalog fields', () => {
+  const findings = auditSite([{
+    url: 'https://voltgear.example/de-de/products/65w-gan-charger', status: 200, indexable: true,
+    canonical: 'https://voltgear.example/de-de/products/65w-gan-charger', robots: 'index,follow',
+    title: '65W GaN Charger', description: 'Travel charger.', h1: '65W GaN Charger', inSitemap: true,
+    pageType: 'product', productSchema: true, sku: 'VG-65-DE', availability: 'InStock', market: 'DE', locale: 'de-DE',
+    hreflangCount: 0, price: '49.99', currency: '', variantCount: 3, variantSkuCoverage: 1
+  }]);
+  assert.ok(findings.some(item => item.rule === 'hreflang-coverage'));
+  assert.ok(findings.some(item => item.rule === 'offer-currency'));
+  assert.ok(findings.some(item => item.rule === 'variant-sku-coverage'));
 });

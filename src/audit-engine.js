@@ -4,7 +4,7 @@ const clean = value => String(value ?? '').trim();
 const normalizedUrl = value => clean(value).replace(/\/$/, '');
 
 function finding(page, rule, severity, message, recommendation) {
-  return { url: page.url, rule, severity, message, recommendation };
+  return { id: `${page.url}|${rule}`, url: page.url, rule, severity, message, recommendation };
 }
 
 export function auditPage(page) {
@@ -29,8 +29,11 @@ export function auditPage(page) {
     if (page.productSchema !== true) findings.push(finding(page, 'product-schema', 'high', 'Product structured data is missing from this product URL.', 'Add Product JSON-LD with name, image, SKU, offer price, currency and availability.'));
     if (!clean(page.sku)) findings.push(finding(page, 'product-sku', 'medium', 'Product SKU is missing from the supplied product record.', 'Map the sellable SKU into the product feed and Product structured data.'));
     if (!clean(page.availability)) findings.push(finding(page, 'product-availability', 'high', 'Product availability is missing from the supplied product record.', 'Expose a current availability value in the product feed and Product structured data.'));
+    if (clean(page.price) && !clean(page.currency)) findings.push(finding(page, 'offer-currency', 'high', 'Product price has no ISO currency code.', 'Supply an ISO 4217 currency in the product feed and Offer JSON-LD for this market.'));
+    if (Number(page.variantCount) > 1 && Number(page.variantSkuCoverage) < Number(page.variantCount)) findings.push(finding(page, 'variant-sku-coverage', 'high', `Only ${page.variantSkuCoverage || 0} of ${page.variantCount} variants have mapped SKUs.`, 'Map every sellable variant SKU to the feed and Product structured data before publishing.'));
     if (page.outOfStock === true && page.indexable !== false && !clean(page.stockAction)) findings.push(finding(page, 'out-of-stock-policy', 'low', 'Out-of-stock product has no supplied retention or replacement action.', 'Review whether to retain the URL with alternatives, redirect a discontinued product, or apply noindex based on replacement value.'));
   }
+  if (clean(page.market) && Number(page.hreflangCount) === 0) findings.push(finding(page, 'hreflang-coverage', 'high', `No hreflang alternates were supplied for the ${page.market} market URL.`, 'Add reciprocal hreflang annotations for each supported market and one x-default fallback.'));
   if (!page.inSitemap) findings.push(finding(page, 'sitemap', 'low', 'URL is not present in the supplied XML sitemap inventory.', 'Include the canonical, indexable URL in the sitemap if it is a search landing page.'));
   return findings;
 }
