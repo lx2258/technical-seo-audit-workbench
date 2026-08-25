@@ -22,6 +22,8 @@ npm start
 
 Open `http://localhost:4173`. Use **Load 3C sample**, paste JSON / CSV, or choose a local file. This tool audits the export you provide; it does not crawl a live store or claim access to Google Search Console. When an HTML snapshot is supplied, its JSON-LD and hreflang markup overrides matching manual fields.
 
+The public demo is deployed from `main` with GitHub Pages after the Pages workflow passes: https://lx2258.github.io/technical-seo-audit-workbench/
+
 ## Example input
 
 ```json
