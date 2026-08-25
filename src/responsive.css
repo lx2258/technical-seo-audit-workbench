@@ -11,3 +11,9 @@
 .file-input input { display:block; width:100%; margin-top:5px; color:#52627a; font-size:11px; }
 .status-select { min-width:96px; padding:5px 22px 5px 7px; border:1px solid var(--line-strong); border-radius:5px; background:#fff; color:#35445b; font-size:11px; }
 .table-wrap table { min-width:760px; }
+.catalog-gallery { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:8px; margin:0 0 18px; }
+.catalog-gallery .catalog-visual { margin:0; }
+.catalog-gallery .catalog-visual img { height:108px; }
+.catalog-gallery .catalog-visual figcaption { display:block; padding:6px 8px; font-size:9px; }
+.catalog-gallery .catalog-visual figcaption span { display:block; margin-top:2px; font-weight:500; }
+@media (max-width:560px) { .catalog-gallery { grid-template-columns:1fr 1fr; }.catalog-gallery .catalog-visual:first-child { grid-column:1 / -1; }.catalog-gallery .catalog-visual:first-child img { height:126px; } }

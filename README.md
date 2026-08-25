@@ -50,7 +50,11 @@ Problem scope was reviewed against [tanujrajputdev/shopify-theme-audit-skill](ht
 
 ## Media attribution
 
-The catalog visual uses [Multi-USB and charger](https://commons.wikimedia.org/wiki/File:Multi-USB_and_charger.jpg) by SD hehua, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The catalog gallery uses these Commons assets:
+
+- [Multi-USB and charger](https://commons.wikimedia.org/wiki/File:Multi-USB_and_charger.jpg) by SD hehua, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+- [Five USB cables with braided jackets in different colours](https://commons.wikimedia.org/wiki/File:Five_USB_cables_with_braided_jackets_in_different_colours.jpg) by Pittigrilli, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+- [Headphones on white background](https://commons.wikimedia.org/wiki/File:Headphones_on_white_background.jpg) by Sprinno, [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 
 ## Portfolio framing
 
