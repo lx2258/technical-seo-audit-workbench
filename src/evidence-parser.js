@@ -35,14 +35,51 @@ function countHreflang(html) {
   return count;
 }
 
+function attribute(markup, name) {
+  return new RegExp(`\\b${name}\\s*=\\s*(["'])(.*?)\\1`, 'i').exec(markup)?.[2] ?? '';
+}
+
+function textContent(markup) {
+  return clean(markup.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '));
+}
+
+function firstTagText(html, tag) {
+  const match = new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i').exec(html);
+  return match ? textContent(match[1]) : '';
+}
+
+function metaContent(html, name) {
+  for (const match of html.matchAll(/<meta\b[^>]*>/gi)) {
+    const tag = match[0];
+    if (attribute(tag, 'name').toLowerCase() === name) return attribute(tag, 'content');
+  }
+  return '';
+}
+
+function canonicalHref(html) {
+  for (const match of html.matchAll(/<link\b[^>]*>/gi)) {
+    const tag = match[0];
+    if (/\bcanonical\b/i.test(attribute(tag, 'rel'))) return attribute(tag, 'href');
+  }
+  return '';
+}
+
 export function enrichPageWithEvidence(page) {
   const html = clean(page.html ?? page.htmlSnapshot ?? page.rawHtml);
   if (!html) return page;
   const product = jsonLdNodes(html).find(isProduct);
   const offer = Array.isArray(product?.offers) ? product.offers[0] : product?.offers ?? {};
+  const extracted = {
+    ...(firstTagText(html, 'title') ? { title: firstTagText(html, 'title') } : {}),
+    ...(metaContent(html, 'description') ? { description: metaContent(html, 'description') } : {}),
+    ...(metaContent(html, 'robots') ? { robots: metaContent(html, 'robots') } : {}),
+    ...(canonicalHref(html) ? { canonical: canonicalHref(html) } : {}),
+    ...(firstTagText(html, 'h1') ? { h1: firstTagText(html, 'h1') } : {})
+  };
   return {
     ...page,
     html,
+    ...extracted,
     productSchema: Boolean(product),
     sku: clean(product?.sku ?? page.sku),
     price: clean(offer.price ?? page.price),

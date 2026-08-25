@@ -81,3 +81,16 @@ test('uses HTML evidence instead of a supplied schema flag when the captured pag
   }]);
   assert.ok(findings.some(item => item.rule === 'product-schema'));
 });
+
+test('extracts canonical, metadata and H1 signals from captured HTML', () => {
+  const page = enrichPageWithEvidence({
+    url: 'https://voltgear.example/products/charger',
+    title: 'stale export title',
+    html: '<html><head><title>65W GaN Charger | VoltGear</title><meta name="description" content="Compact USB-C charger"><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://voltgear.example/products/65w-gan-charger"></head><body><h1>65W GaN USB-C Charger</h1></body></html>'
+  });
+  assert.equal(page.title, '65W GaN Charger | VoltGear');
+  assert.equal(page.description, 'Compact USB-C charger');
+  assert.equal(page.robots, 'noindex,follow');
+  assert.equal(page.canonical, 'https://voltgear.example/products/65w-gan-charger');
+  assert.equal(page.h1, '65W GaN USB-C Charger');
+});

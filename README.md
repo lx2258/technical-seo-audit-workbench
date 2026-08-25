@@ -9,7 +9,7 @@ A local-first portfolio project for reviewing crawl exports. It translates page-
 - Severity scoring with a transparent explanation and a concrete next action.
 - Local JSON / Screaming Frog-style CSV import and client-side CSV export. Crawl data stays in the browser.
 - Cross-border checks for supplied market/hreflang coverage, ISO offer currency, and variant SKU coverage. Remediation status is stored only in the current browser.
-- Optional `html` / `htmlSnapshot` evidence parsing: extracts Product JSON-LD (SKU, offer price, currency and availability) plus `hreflang` links from captured page source.
+- Optional `html` / `htmlSnapshot` evidence parsing: extracts title, meta description, robots, H1, canonical, Product JSON-LD (SKU, offer price, currency and availability) plus `hreflang` links from captured page source.
 - A deliberately bounded data contract: this is an audit workbench, not a crawler or a Google Search Console substitute.
 
 ## Run it
